@@ -19,6 +19,11 @@
     <span asp-validation-for="Price" class="text-danger"></span>
 </div>
 
+<div class="mb-3">
+    <label for="formFile" class="form-label">@Html.DisplayNameFor(Model => Model.ImageUrl)</label>
+    <input name="imageFile" class="form-control" type="file" id="formFile" accept="image/*">
+</div>
+
 <div class="form-group">
     <input type="submit" value="Lưu thay đổi" class="btn btn-dark" />
 </div>

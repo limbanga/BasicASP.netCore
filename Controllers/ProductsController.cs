@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ClothesStore.Data;
 using ClothesStore.Models;
+using ClothesStore.Services;
 
 namespace ClothesStore.Controllers
 {
     public class ProductsController : Controller
     {
         private readonly ClothesStoreContext _context;
+        private readonly IUploader _uploader;
 
-        public ProductsController(ClothesStoreContext context)
+        public ProductsController(
+            ClothesStoreContext context,
+            IUploader uploader)
         {
             _context = context;
+            _uploader = uploader;
         }
 
         // GET: Products
@@ -49,13 +54,20 @@ namespace ClothesStore.Controllers
             return View();
         }
 
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price")] Product product)
+        public async Task<IActionResult> Create(
+            [Bind("Id,Name,Description,Price")] Product product,
+            IFormFile imageFile)
         {
+            product.ImageUrl = await _uploader.UploadAsync("products", product.Id.ToString(), imageFile);
+
+            if (imageFile == null)
+            {
+                ModelState.AddModelError("ImageUrl", "Hình ảnh không được bỏ trống.");
+                return View(product);
+            }
+           
             if (ModelState.IsValid)
             {
                 _context.Add(product);

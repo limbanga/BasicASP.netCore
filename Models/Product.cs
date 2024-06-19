@@ -19,6 +19,10 @@ namespace ClothesStore.Models
         [Range(0, double.MaxValue, ErrorMessage = "{0} không nhỏ hơn {1}.")]
         public double Price { get; set; } = 0;
 
+        [Display(Name = "Hình ảnh")]
+        [StringLength(255)]
+        public string? ImageUrl { get; set; }
+
         public string PriceFormated
         {
             get
