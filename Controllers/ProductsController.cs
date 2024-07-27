@@ -60,14 +60,15 @@ namespace ClothesStore.Controllers
             [Bind("Id,Name,Description,Price")] Product product,
             IFormFile imageFile)
         {
-            product.ImageUrl = await _uploader.UploadAsync("products", product.Id.ToString(), imageFile);
-
+            // check if the image file is null
             if (imageFile == null)
             {
                 ModelState.AddModelError("ImageUrl", "Hình ảnh không được bỏ trống.");
                 return View(product);
             }
-           
+
+            product = await uploaderProductImage(product, imageFile);
+
             if (ModelState.IsValid)
             {
                 _context.Add(product);
@@ -94,21 +95,27 @@ namespace ClothesStore.Controllers
         }
 
         // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,Name,Description,Price")] Product product)
+        public async Task<IActionResult> Edit(
+            long id,
+            [Bind("Id,Name,Description,Price")] Product product,
+            IFormFile imageFile)
         {
             if (id != product.Id)
             {
                 return NotFound();
             }
 
+            
             if (ModelState.IsValid)
             {
                 try
                 {
+                    if (imageFile != null)
+                    {
+                        product = await uploaderProductImage(product, imageFile);
+                    }
                     _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
@@ -164,6 +171,13 @@ namespace ClothesStore.Controllers
         private bool ProductExists(long id)
         {
             return _context.Product.Any(e => e.Id == id);
+        }
+
+        private async Task<Product> uploaderProductImage(Product product, IFormFile imageFile) 
+        { 
+            string randomFileName = Guid.NewGuid().ToString();
+            product.ImageUrl = await _uploader.UploadAsync("products", randomFileName, imageFile);
+            return product;
         }
     }
 }

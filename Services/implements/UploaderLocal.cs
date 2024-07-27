@@ -1,4 +1,5 @@
-﻿
+﻿using System.IO;
+
 namespace ClothesStore.Services.implements
 {
     public class UploaderLocal : IUploader
@@ -7,11 +8,12 @@ namespace ClothesStore.Services.implements
 
         public async Task<string> UploadAsync(string folder, string fileName, IFormFile fileContent)
         {
+            // Get the root directory of the project
             string rootDirectory = AppContext.BaseDirectory;
-            string temp = System.IO.Directory.GetParent(rootDirectory).FullName;
+            string temp = Directory.GetParent(rootDirectory)!.FullName;
             for (int i = 0; i< 3; i++)
             {
-                temp = System.IO.Directory.GetParent(temp).FullName;
+                temp = Directory.GetParent(temp)!.FullName;
             }
             rootDirectory = Path.Combine(temp, "wwwroot");
             
@@ -22,10 +24,17 @@ namespace ClothesStore.Services.implements
                 Directory.CreateDirectory(uploadDirectory);
             }
 
-            using(var fileStream = new FileStream(Path.Combine(uploadDirectory, fileName), FileMode.Create))
+            // get the file extension
+            var fileExtension = Path.GetExtension(fileContent.FileName);
+            if (fileExtension != null) {
+                fileName += fileExtension;
+            }
+            // upload the file to the server
+            using (var fileStream = new FileStream(Path.Combine(uploadDirectory, fileName), FileMode.Create))
             {
                 await fileContent.CopyToAsync(fileStream);
             }
+
             return fileName;
         }
 
