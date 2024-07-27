@@ -99,7 +99,7 @@ namespace ClothesStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
             long id,
-            [Bind("Id,Name,Description,Price")] Product product,
+            [Bind("Id,Name,Description,Price,ImageUrl")] Product product,
             IFormFile? imageFile)
         {
             if (id != product.Id)
@@ -107,7 +107,8 @@ namespace ClothesStore.Controllers
                 return NotFound();
             }
 
-            ModelState.MarkFieldValid(nameof(product.ImageUrl));
+            var s = product.ImageUrl;
+
             if (ModelState.IsValid)
             {
                 try
