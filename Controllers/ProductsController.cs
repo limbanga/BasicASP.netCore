@@ -100,14 +100,14 @@ namespace ClothesStore.Controllers
         public async Task<IActionResult> Edit(
             long id,
             [Bind("Id,Name,Description,Price")] Product product,
-            IFormFile imageFile)
+            IFormFile? imageFile)
         {
             if (id != product.Id)
             {
                 return NotFound();
             }
 
-            
+            ModelState.MarkFieldValid(nameof(product.ImageUrl));
             if (ModelState.IsValid)
             {
                 try
