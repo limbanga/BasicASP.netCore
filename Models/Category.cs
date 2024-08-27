@@ -10,5 +10,6 @@ namespace ClothesStore.Models
         [MaxLength(28, ErrorMessage = "{0} không quá {1} ký tự.")]
         public required string Name { get; set; }
         public List<Product>? Products { get; set; }
+
     }
 }

@@ -27,7 +27,8 @@ namespace ClothesStore.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Product.ToListAsync());
+            var products = await _context.Product.Include(p => p.Category).ToListAsync();
+            return View(products);
         }
 
         // GET: Products/Details/5
@@ -51,6 +52,8 @@ namespace ClothesStore.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
+            var categories = _context.Category.ToList();
+            ViewBag.Categories = new SelectList(categories, "Id", "Name");
             return View();
         }
 
@@ -58,6 +61,7 @@ namespace ClothesStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
             [Bind("Id,Name,Description,Price")] Product product,
+            string categoryId,
             IFormFile imageFile)
         {
             // check if the image file is null
@@ -66,8 +70,16 @@ namespace ClothesStore.Controllers
                 ModelState.AddModelError("ImageUrl", "Hình ảnh không được bỏ trống.");
                 return View(product);
             }
+            var category = _context.Category.Find(long.Parse(categoryId));
+
+            if (category == null)
+            {
+                ModelState.AddModelError("CategoryId", "Danh mục không tồn tại.");
+                return View(product);
+            }
 
             product = await uploaderProductImage(product, imageFile);
+            product.Category = category;
 
             if (ModelState.IsValid)
             {
@@ -91,6 +103,7 @@ namespace ClothesStore.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Categories = new SelectList(_context.Category.ToList(), "Id", "Name", product.CategoryId);
             return View(product);
         }
 
@@ -131,6 +144,7 @@ namespace ClothesStore.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Categories = new SelectList(_context.Category.ToList(), "Id", "Name");
             return View(product);
         }
 
