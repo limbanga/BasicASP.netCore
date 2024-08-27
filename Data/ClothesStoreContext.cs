@@ -15,6 +15,7 @@ namespace ClothesStore.Data
         }
 
         public DbSet<ClothesStore.Models.Product> Product { get; set; } = default!;
+        public DbSet<ClothesStore.Models.Category> Category { get; set; } = default!;
     }
 
 }

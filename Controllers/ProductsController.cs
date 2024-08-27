@@ -107,8 +107,6 @@ namespace ClothesStore.Controllers
                 return NotFound();
             }
 
-            var s = product.ImageUrl;
-
             if (ModelState.IsValid)
             {
                 try

@@ -28,6 +28,7 @@
     <label for="formFile" class="form-label">@Html.DisplayNameFor(Model => Model.ImageUrl)</label>
     <input name="imageFile" class="form-control" type="file" id="formFile" accept="image/*">
     <input asp-for="ImageUrl" class="visually-hidden" type="text" />
+    <span asp-validation-for="ImageUrl" class="text-danger"></span>
 </div>
 
 <div class="form-group">

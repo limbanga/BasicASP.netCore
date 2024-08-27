@@ -23,6 +23,9 @@ namespace ClothesStore.Models
         [StringLength(255)]
         public string? ImageUrl { get; set; }
 
+        public long? CategoryId { get; set; }
+        public Category? Category { get; set; }
+
         public string PriceFormated
         {
             get
