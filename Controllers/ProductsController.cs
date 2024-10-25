@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using ClothesStore.Data;
 using ClothesStore.Models;
 using ClothesStore.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ClothesStore.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly ClothesStoreContext _context;

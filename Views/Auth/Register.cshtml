@@ -1,0 +1,36 @@
+﻿@model ClothesStore.ViewModels.RegisterViewModel
+
+<h1>
+    Welcome to the Register Page
+</h1>
+
+
+<form asp-controller="Auth" asp-action="Register" method="post">
+
+    @if (ViewBag.RegisterErrors != null)
+    {        
+        @foreach (String error in ViewBag.RegisterErrors){
+            <span class="text-danger">@error</span>
+        }
+    }
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group mb-3">
+        <label asp-for="Password" class="form-label"></label>
+        <input asp-for="Password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group mb-3">
+        <button class="btn btn-primary">Login</button>
+    </div>
+</form>

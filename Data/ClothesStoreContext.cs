@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ClothesStore.Models;
 
 namespace ClothesStore.Data
 {
-    public class ClothesStoreContext : DbContext
+    public class ClothesStoreContext : IdentityDbContext<ApplicationUserz, Rolez, Guid>
     {
-        public ClothesStoreContext (DbContextOptions<ClothesStoreContext> options)
+        public ClothesStoreContext(DbContextOptions<ClothesStoreContext> options)
             : base(options)
         {
         }
 
-        public DbSet<ClothesStore.Models.Product> Product { get; set; } = default!;
-        public DbSet<ClothesStore.Models.Category> Category { get; set; } = default!;
+        public DbSet<Product> Product { get; set; } = default!;
+        public DbSet<Category> Category { get; set; } = default!;
     }
 
 }
