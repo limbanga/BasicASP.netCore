@@ -1,13 +1,44 @@
-﻿<h1> 
-    Welcome to the Login Page
-</h1>
+﻿
+<div class="position-relative ">
+    <main class="container min-vh-100 d-flex justify-content-end p-3 align-items-center">
+        <div class="card w-auto p-3">
+            <div class="card-body">
+                <h2 class="card-title text-dark">
+                    Login
+                </h2>
+                <p class="card-text">Please enter your credentials to login.</p>
+                <form asp-controller="Auth" asp-action="Login" method="post" style="min-width: 400px;">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<form asp-controller="Auth" asp-action="Login" method="post" style="max-width: 430px;">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <partial name="~/Views/Auth/components/_LoginForm.cshtml" />
 
-    <partial name="~/Views/Auth/components/_LoginForm.cshtml" />
+                    <div class="form-group mb-3">
+                        <button class="btn btn-primary w-100">Login</button>
+                    </div>
+                  
+                    <div class="form-group mb-3">
+                        <p class="text-center">Don't have an account? <a asp-controller="Auth" asp-action="Register">Register</a></p>
+                    </div>
 
-    <div class="form-group mb-3">
-       <button class="btn btn-primary">Login</button>
-    </div>
-</form>
+                    <div class="form-group mb-3">
+                        <p class="text-center">or login with</p>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="@Url.Action("ExternalLogin", "Auth", new { provider = "Google" })" class="btn btn-outline-danger w-100">
+                                <i class="fa-brands fa-google"></i> Google
+                            </a>
+                            <!-- Có thể thêm Facebook nếu muốn -->
+                            <a href="@Url.Action("ExternalLogin", "Auth", new { provider = "Facebook" })" class="btn btn-outline-primary w-100">
+                                <i class="fa-brands fa-facebook-f"></i> Facebook
+                            </a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+         alt="BackGround"
+         class="position-absolute top-0 start-0 w-100 h-100 z-n1 card-img-overlay" />
+</div>
